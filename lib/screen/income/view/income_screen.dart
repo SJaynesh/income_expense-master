@@ -12,10 +12,10 @@ class incomescreen extends StatefulWidget {
 }
 
 class _incomescreenState extends State<incomescreen> {
-  TextEditingController txtcate = TextEditingController(text: 'food');
-  TextEditingController txtamount = TextEditingController(text: '1000');
-  TextEditingController txtnote = TextEditingController(text: 'restaurent');
-  TextEditingController txtpaytype = TextEditingController(text: 'online');
+  TextEditingController txtcate = TextEditingController();
+  TextEditingController txtamount = TextEditingController();
+  TextEditingController txtnote = TextEditingController();
+  TextEditingController txtpaytype = TextEditingController();
   TextEditingController txtstatus = TextEditingController();
   TextEditingController txtdate = TextEditingController(text: "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}");
   TextEditingController txttime = TextEditingController(text: "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}");
@@ -32,7 +32,7 @@ class _incomescreenState extends State<incomescreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.indigo,
+          backgroundColor: Colors.black,
           title: Text("Income Expense"),
           centerTitle: true,
         ),
@@ -99,6 +99,19 @@ class _incomescreenState extends State<incomescreen> {
                     time: txttime.text,
                     paytype: txtpaytype.text);
                 print(dbhelper.database);
+                int i = 0;
+                for( i=0; i<transactioncontroller.transectionlist.length; i++)
+                  {
+                    int status = int.parse(transactioncontroller.transectionlist[i]['status']);
+                    if(status==1)
+                      {
+                        int amount = int.parse(transactioncontroller.transectionlist[i]['amount']);
+                        transactioncontroller.total.value = transactioncontroller.total.value + amount;
+                        transactioncontroller.income.value = transactioncontroller.income.value + amount;
+                      }
+                  }
+                print('${transactioncontroller.total.value}==============================');
+                Get.back();
               },
               child: Container(
                 margin: EdgeInsets.all(10),
@@ -126,6 +139,18 @@ class _incomescreenState extends State<incomescreen> {
                     time: txttime.text,
                     paytype: txtpaytype.text);
                 print(dbhelper.database);
+                int i = 0;
+                for( i=0; i<transactioncontroller.transectionlist.length; i++)
+                {
+                  int status = int.parse(transactioncontroller.transectionlist[i]['status']);
+                  if(status==0)
+                  {
+                    int amount = int.parse(transactioncontroller.transectionlist[i]['amount']);
+                    transactioncontroller.total.value = transactioncontroller.total.value - amount;
+                    transactioncontroller.expense.value = transactioncontroller.expense.value + amount;
+                  }
+                }
+                Get.back();
               },
               child: Container(
                 margin: EdgeInsets.all(10),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:income_expense/screen/transection/controller/transection_controller.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({Key? key}) : super(key: key);
@@ -9,12 +10,13 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomescreenState extends State<Homescreen> {
+  Transactioncontroller controller = Get.put(Transactioncontroller());
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.indigo,
+          backgroundColor: Colors.black,
           title: Text("My Pocket",style: TextStyle(color: Colors.white,fontSize: 20,letterSpacing: 1)),
         ),
         body: Column(
@@ -48,7 +50,7 @@ class _HomescreenState extends State<Homescreen> {
                 height: 50,
                 width: 100,
                 decoration: BoxDecoration(
-                  color: Colors.indigo,
+                  color: Colors.black,
                   borderRadius: BorderRadius.circular(50),
                 ),
                 alignment: Alignment.center,
@@ -59,6 +61,7 @@ class _HomescreenState extends State<Homescreen> {
           Expanded(
             child: InkWell(
               onTap: () {
+                controller.readtransection();
                 Get.toNamed('/transaction');
               },
               child: Container(
@@ -66,7 +69,7 @@ class _HomescreenState extends State<Homescreen> {
                 height: 50,
                 width: 100,
                 decoration: BoxDecoration(
-                  color: Colors.indigo,
+                  color: Colors.black,
                   borderRadius: BorderRadius.circular(50),
                 ),
                 alignment: Alignment.center,
@@ -85,14 +88,15 @@ class _HomescreenState extends State<Homescreen> {
       height: 100,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.indigo,
+        color: Colors.black,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text('Total Balance',style: TextStyle(color: Colors.white,letterSpacing: 1,fontSize: 22,)),
-          Text('\$ 2000/-',style: TextStyle(color: Colors.white,letterSpacing: 2,fontSize: 22,fontWeight: FontWeight.w500)),
+
+          Obx(() => Text('\$ ${controller.total.value}/-',style: TextStyle(color: Colors.white,letterSpacing: 2,fontSize: 22,fontWeight: FontWeight.w500))),
         ],
       ),
     );
@@ -118,7 +122,7 @@ class _HomescreenState extends State<Homescreen> {
               children: [
                 Text('Total Income',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500)),
                 SizedBox(height: 10,),
-                Text('\$ 52000',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600)),
+                Obx(() =>  Text('\$ ${controller.income.value}',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600))),
               ],
             ),
           ),
@@ -138,7 +142,7 @@ class _HomescreenState extends State<Homescreen> {
               children: [
                 Text('Total Expense',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500)),
                 SizedBox(height: 10,),
-                Text('\$ 5000',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600)),
+                Obx(() =>  Text('\$ ${controller.expense.value}',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600))),
               ],
             ),
           ),
